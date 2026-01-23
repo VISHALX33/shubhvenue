@@ -1,0 +1,293 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
+
+function EditTent() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    name: '', type: '', mainImage: '', images: ['', '', ''],
+    location: { city: '', area: '', address: '', pincode: '' },
+    price: { perDay: '', perEvent: '' },
+    capacity: { min: '', max: '' },
+    tentSize: { length: '', width: '', height: '' },
+    features: [], services: [], furniture: [],
+    setupTime: '', about: '',
+    contactInfo: { phone: '', email: '', website: '', whatsapp: '' }
+  });
+
+  const [featureInput, setFeatureInput] = useState('');
+  const [serviceInput, setServiceInput] = useState('');
+  const [furnitureInput, setFurnitureInput] = useState('');
+
+  const tentTypes = ['Wedding Tent', 'Corporate Tent', 'Party Tent', 'Exhibition Tent', 'Luxury Tent', 'Budget Tent'];
+
+  useEffect(() => {
+    fetchListingData();
+  }, [id]);
+
+  const fetchListingData = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`http://localhost:5000/api/tents/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        setFormData(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching listing:', error);
+      alert('Failed to fetch listing data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name.includes('.')) {
+      const parts = name.split('.');
+      if (parts.length === 2) {
+        const [parent, child] = parts;
+        setFormData(prev => ({ ...prev, [parent]: { ...prev[parent], [child]: value } }));
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleImageChange = (idx, value) => {
+    const newImages = [...formData.images];
+    newImages[idx] = value;
+    setFormData(prev => ({ ...prev, images: newImages }));
+  };
+
+  const addItem = (field, input, setInput) => {
+    if (input.trim()) {
+      setFormData(prev => ({ ...prev, [field]: [...prev[field], input.trim()] }));
+      setInput('');
+    }
+  };
+
+  const removeItem = (field, idx) => {
+    setFormData(prev => ({ ...prev, [field]: prev[field].filter((_, i) => i !== idx) }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put(`http://localhost:5000/api/tents/${id}`, formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.success) {
+        alert('Tent listing updated successfully!');
+        navigate('/vendor/listings');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert(error.response?.data?.error || 'Failed to update listing');
+    }
+  };
+
+  if (loading) {
+    return <div className="container mx-auto px-4 py-8 text-center">Loading...</div>;
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Edit Tent Service</h1>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Basic Information</h2>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Tent Name *</label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Tent Type *</label>
+              <select name="type" value={formData.type} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <option value="">Select Type</option>
+                {tentTypes.map(type => <option key={type} value={type}>{type}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Images</h2>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Main Image URL *</label>
+              <input type="url" name="mainImage" value={formData.mainImage} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+            </div>
+            {formData.images.map((img, idx) => (
+              <div key={idx}>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Additional Image {idx + 1} URL</label>
+                <input type="url" value={img} onChange={(e) => handleImageChange(idx, e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Location</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                <input type="text" name="location.city" value={formData.location.city} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Area *</label>
+                <input type="text" name="location.area" value={formData.location.area} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+              <input type="text" name="location.address" value={formData.location.address} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Pincode</label>
+              <input type="text" name="location.pincode" value={formData.location.pincode} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Pricing</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Price per Day (₹)</label>
+                <input type="number" name="price.perDay" value={formData.price.perDay} onChange={handleChange} min="0" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Price per Event (₹)</label>
+                <input type="number" name="price.perEvent" value={formData.price.perEvent} onChange={handleChange} min="0" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Capacity & Dimensions</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Min Capacity *</label>
+                <input type="number" name="capacity.min" value={formData.capacity.min} onChange={handleChange} required min="0" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Max Capacity *</label>
+                <input type="number" name="capacity.max" value={formData.capacity.max} onChange={handleChange} required min="0" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Length (ft)</label>
+                <input type="number" name="tentSize.length" value={formData.tentSize.length} onChange={handleChange} min="0" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Width (ft)</label>
+                <input type="number" name="tentSize.width" value={formData.tentSize.width} onChange={handleChange} min="0" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Height (ft)</label>
+                <input type="number" name="tentSize.height" value={formData.tentSize.height} onChange={handleChange} min="0" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Setup Time</label>
+              <input type="text" name="setupTime" value={formData.setupTime} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="e.g., 2-3 hours" />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Features</h2>
+            <div className="flex gap-2">
+              <input type="text" value={featureInput} onChange={(e) => setFeatureInput(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addItem('features', featureInput, setFeatureInput))} placeholder="Enter a feature" className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              <button type="button" onClick={() => addItem('features', featureInput, setFeatureInput)} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add</button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {formData.features.map((feature, idx) => (
+                <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full flex items-center gap-2">
+                  {feature}
+                  <button type="button" onClick={() => removeItem('features', idx)} className="text-blue-600 hover:text-blue-800">&times;</button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Services Included</h2>
+            <div className="flex gap-2">
+              <input type="text" value={serviceInput} onChange={(e) => setServiceInput(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addItem('services', serviceInput, setServiceInput))} placeholder="Enter a service" className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              <button type="button" onClick={() => addItem('services', serviceInput, setServiceInput)} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add</button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {formData.services.map((service, idx) => (
+                <span key={idx} className="px-3 py-1 bg-green-100 text-green-800 rounded-full flex items-center gap-2">
+                  {service}
+                  <button type="button" onClick={() => removeItem('services', idx)} className="text-green-600 hover:text-green-800">&times;</button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Furniture Available</h2>
+            <div className="flex gap-2">
+              <input type="text" value={furnitureInput} onChange={(e) => setFurnitureInput(e.target.value)} onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addItem('furniture', furnitureInput, setFurnitureInput))} placeholder="Enter furniture item" className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              <button type="button" onClick={() => addItem('furniture', furnitureInput, setFurnitureInput)} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add</button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {formData.furniture.map((item, idx) => (
+                <span key={idx} className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full flex items-center gap-2">
+                  {item}
+                  <button type="button" onClick={() => removeItem('furniture', idx)} className="text-purple-600 hover:text-purple-800">&times;</button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">About</h2>
+            <textarea name="about" value={formData.about} onChange={handleChange} rows="4" className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Describe your tent service..."></textarea>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-700">Contact Information</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Phone *</label>
+                <input type="tel" name="contactInfo.phone" value={formData.contactInfo.phone} onChange={handleChange} required className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <input type="email" name="contactInfo.email" value={formData.contactInfo.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Website</label>
+                <input type="url" name="contactInfo.website" value={formData.contactInfo.website} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">WhatsApp</label>
+                <input type="tel" name="contactInfo.whatsapp" value={formData.contactInfo.whatsapp} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <button type="submit" className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-200">
+              Update Listing
+            </button>
+            <button type="button" onClick={() => navigate('/vendor/listings')} className="px-6 py-3 border border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition duration-200">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default EditTent;

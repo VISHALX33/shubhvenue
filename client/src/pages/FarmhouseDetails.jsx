@@ -12,6 +12,11 @@ function FarmhouseDetails() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('about');
   const [selectedImage, setSelectedImage] = useState(0);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewData, setReviewData] = useState({
+    rating: 5,
+    comment: ''
+  });
 
   useEffect(() => {
     fetchFarmHouseDetails();
@@ -26,6 +31,37 @@ function FarmhouseDetails() {
       console.error('Error fetching farm house details:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!user) {
+      alert('Please login to submit a review');
+      navigate('/guest/login');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        `${API_URL}/farm-houses/${id}/reviews`,
+        reviewData,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+
+      setFarmHouse(response.data.data);
+      setShowReviewModal(false);
+      setReviewData({ rating: 5, comment: '' });
+      alert('Review submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert(error.response?.data?.message || 'Failed to submit review');
     }
   };
 
@@ -237,7 +273,22 @@ function FarmhouseDetails() {
 
                 {activeTab === 'reviews' && (
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4">Guest Reviews</h2>
+                    <div className="flex justify-between items-center mb-6">
+                      <h2 className="text-2xl font-bold text-gray-800">Guest Reviews</h2>
+                      <button
+                        onClick={() => {
+                          if (!user) {
+                            alert('Please login to write a review');
+                            navigate('/guest/login');
+                          } else {
+                            setShowReviewModal(true);
+                          }
+                        }}
+                        className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold"
+                      >
+                        Write a Review
+                      </button>
+                    </div>
                     <div className="space-y-6">
                       {farmHouse.reviews.map((review, index) => (
                         <div key={index} className="border-b border-gray-200 pb-6 last:border-b-0">
@@ -352,6 +403,78 @@ function FarmhouseDetails() {
           </div>
         </div>
       </div>
+
+      {/* Review Modal */}
+      {showReviewModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={() => setShowReviewModal(false)}
+        >
+          <div 
+            className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Write a Review</h3>
+            <form onSubmit={handleReviewSubmit}>
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Rating
+                </label>
+                <div className="flex space-x-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setReviewData({ ...reviewData, rating: star })}
+                      className="focus:outline-none"
+                    >
+                      <svg
+                        className={`w-8 h-8 ${
+                          star <= reviewData.rating ? 'text-yellow-400' : 'text-gray-300'
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                      </svg>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Comment
+                </label>
+                <textarea
+                  value={reviewData.comment}
+                  onChange={(e) => setReviewData({ ...reviewData, comment: e.target.value })}
+                  required
+                  rows="4"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="Share your experience..."
+                />
+              </div>
+
+              <div className="flex space-x-4">
+                <button
+                  type="submit"
+                  className="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors font-semibold"
+                >
+                  Submit Review
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowReviewModal(false)}
+                  className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

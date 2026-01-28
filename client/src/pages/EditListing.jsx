@@ -3,6 +3,7 @@ import EditMarriageGarden from './EditMarriageGarden';
 import EditPartyHall from './EditPartyHall';
 import EditCommunityHall from './EditCommunityHall';
 import EditBanquetHall from './EditBanquetHall';
+import EditFarmHouse from './EditFarmHouse';
 import EditEventManagement from './EditEventManagement';
 import EditTent from './EditTent';
 import EditStageSetup from './EditStageSetup';
@@ -39,6 +40,7 @@ function EditListing() {
     'party-hall': EditPartyHall,
     'community-hall': EditCommunityHall,
     'banquet-hall': EditBanquetHall,
+    'farm-house': EditFarmHouse,
     'event-management': EditEventManagement,
     'tent': EditTent,
     'stage-setup': EditStageSetup,

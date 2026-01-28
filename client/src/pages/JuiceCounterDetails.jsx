@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import {
   FaMapMarkerAlt,
   FaStar,
@@ -29,7 +30,7 @@ const JuiceCounterDetails = () => {
   useEffect(() => {
     const fetchCounter = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/juice-counter/${id}`);
+        const response = await axios.get(`${API_URL}/juice-counter/${id}`);
         setCounter(response.data.data);
         setLoading(false);
       } catch (error) {
@@ -44,8 +45,8 @@ const JuiceCounterDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/juice-counter/${id}/reviews`, reviewForm);
-      const response = await axios.get(`http://localhost:5000/api/juice-counter/${id}`);
+      await axios.post(`${API_URL}/juice-counter/${id}/reviews`, reviewForm);
+      const response = await axios.get(`${API_URL}/juice-counter/${id}`);
       setCounter(response.data.data);
       setReviewForm({ userName: '', rating: 5, comment: '' });
       alert('Review submitted successfully!');

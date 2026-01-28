@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { 
   FaMapMarkerAlt, 
   FaStar, 
@@ -34,7 +35,7 @@ const CostumeDressDetails = () => {
   const fetchCostumeDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/costume-dress/${id}`);
+      const response = await axios.get(`${API_URL}/costume-dress/${id}`);
       setCostume(response.data.data);
       setLoading(false);
     } catch (err) {

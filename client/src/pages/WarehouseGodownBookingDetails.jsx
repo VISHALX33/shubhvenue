@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -21,7 +22,7 @@ function WarehouseGodownBookingDetails() {
 
   const fetchWarehouseDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/warehouse-godown/${id}`)
+      const response = await axios.get(`${API_URL}/warehouse-godown/${id}`)
       setWarehouse(response.data)
       setLoading(false)
     } catch (error) {
@@ -33,7 +34,7 @@ function WarehouseGodownBookingDetails() {
   const handleReviewSubmit = async (e) => {
     e.preventDefault()
     try {
-      await axios.post(`http://localhost:5000/api/warehouse-godown/${id}/reviews`, reviewForm)
+      await axios.post(`${API_URL}/warehouse-godown/${id}/reviews`, reviewForm)
       setReviewForm({ userName: '', rating: 5, comment: '' })
       fetchWarehouseDetails()
     } catch (error) {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function EditDholTasha() {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ function EditDholTasha() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/dhol-tashas/${id}`, {
+      const response = await axios.get(`${API_URL}/dhol-tashas/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -94,7 +95,7 @@ function EditDholTasha() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/dhol-tashas/${id}`, formData, {
+        `${API_URL}/dhol-tashas/${id}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

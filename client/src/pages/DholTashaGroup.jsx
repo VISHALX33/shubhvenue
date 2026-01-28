@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import DholTashaCard from '../components/DholTashaCard';
+import API_URL from '../config/api';
 
 function DholTashaGroup() {
   const [dholTashas, setDholTashas] = useState([]);
@@ -33,7 +34,7 @@ function DholTashaGroup() {
       if (filters.maxPrice) queryParams.append('maxPrice', filters.maxPrice);
 
       const queryString = queryParams.toString();
-      const url = `http://localhost:5000/api/dhol-tasha${queryString ? `?${queryString}` : ''}`;
+      const url = `${API_URL}/dhol-tasha${queryString ? `?${queryString}` : ''}`;
       
       const response = await axios.get(url);
       setDholTashas(response.data.data);

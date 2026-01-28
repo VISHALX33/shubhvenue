@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RentHouseCard from '../components/RentHouseCard';
 import { FaHome, FaFilter } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function RentHouseBooking() {
   const [houses, setHouses] = useState([]);
@@ -26,7 +27,7 @@ function RentHouseBooking() {
 
   const fetchHouses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/rent-house');
+      const response = await axios.get(`${API_URL}/rent-house`);
       setHouses(response.data);
       setFilteredHouses(response.data);
       setLoading(false);

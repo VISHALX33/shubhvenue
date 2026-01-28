@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const AddGenerator = () => {
   const navigate = useNavigate();
@@ -118,7 +119,7 @@ const AddGenerator = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5000/api/generators',
+        `${API_URL}/generators`,
         formData,
         {
           headers: {

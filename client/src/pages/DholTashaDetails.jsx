@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const DholTashaDetails = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const DholTashaDetails = () => {
   const fetchDholTashaDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/dhol-tasha/${id}`);
+      const response = await axios.get(`${API_URL}/dhol-tasha/${id}`);
       setDholTasha(response.data.data);
     } catch (error) {
       console.error('Error fetching dhol tasha details:', error);

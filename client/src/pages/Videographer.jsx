@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import VideographerCard from '../components/VideographerCard';
+import API_URL from '../config/api';
 
 function Videographer() {
   const [videographers, setVideographers] = useState([]);
@@ -29,7 +30,7 @@ function Videographer() {
       if (filters.specialization) params.append('specialization', filters.specialization);
 
       const queryString = params.toString() ? `?${params.toString()}` : '';
-      const response = await axios.get(`http://localhost:5000/api/videographers${queryString}`);
+      const response = await axios.get(`${API_URL}/videographers${queryString}`);
       
       setVideographers(response.data.data);
       setLoading(false);

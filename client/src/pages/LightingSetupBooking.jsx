@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import LightingSetupCard from '../components/LightingSetupCard';
+import API_URL from '../config/api';
 
 const LightingSetupBooking = () => {
   const [lightingSetups, setLightingSetups] = useState([]);
@@ -31,7 +32,7 @@ const LightingSetupBooking = () => {
       if (filters.coverage) queryParams.append('coverage', filters.coverage);
 
       const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
-      const response = await axios.get(`http://localhost:5000/api/lighting-setups${queryString}`);
+      const response = await axios.get(`${API_URL}/lighting-setups${queryString}`);
       setLightingSetups(response.data.data);
     } catch (error) {
       console.error('Error fetching lighting setups:', error);

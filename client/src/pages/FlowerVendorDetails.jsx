@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import {
   FaLeaf,
   FaStar,
@@ -33,7 +34,7 @@ const FlowerVendorDetails = () => {
   const fetchVendorDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/flower-vendor/${id}`);
+      const response = await axios.get(`${API_URL}/flower-vendor/${id}`);
       setVendor(response.data.data);
     } catch (error) {
       console.error('Error fetching flower vendor details:', error);
@@ -45,7 +46,7 @@ const FlowerVendorDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/flower-vendor/${id}/reviews`, reviewForm);
+      await axios.post(`${API_URL}/flower-vendor/${id}/reviews`, reviewForm);
       setReviewForm({ userName: '', rating: 5, comment: '' });
       fetchVendorDetails();
       alert('Review submitted successfully!');

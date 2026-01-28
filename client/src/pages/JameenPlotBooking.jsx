@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import JameenPlotBookingCard from '../components/JameenPlotBookingCard'
@@ -75,7 +76,7 @@ function JameenPlotBooking() {
         }
       }
 
-      const response = await axios.get('http://localhost:5000/api/jameen-plot', { params })
+      const response = await axios.get(`${API_URL}/jameen-plot`, { params })
       setPlots(response.data)
     } catch (error) {
       console.error('Error fetching plots:', error)

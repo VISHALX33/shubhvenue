@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import CateringCard from '../components/CateringCard';
+import API_URL from '../config/api';
 
 function CateringServices() {
   const [caterings, setCaterings] = useState([]);
@@ -33,7 +34,7 @@ function CateringServices() {
       if (filters.servingStyle) queryParams.append('servingStyle', filters.servingStyle);
 
       const queryString = queryParams.toString();
-      const url = `http://localhost:5000/api/catering${queryString ? `?${queryString}` : ''}`;
+      const url = `${API_URL}/catering${queryString ? `?${queryString}` : ''}`;
       
       const response = await axios.get(url);
       setCaterings(response.data.data);

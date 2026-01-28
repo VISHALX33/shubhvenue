@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import {
   FaMapMarkerAlt,
   FaStar,
@@ -29,7 +30,7 @@ const LiveFoodStallDetails = () => {
   useEffect(() => {
     const fetchStall = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/live-food-stall/${id}`);
+        const response = await axios.get(`${API_URL}/live-food-stall/${id}`);
         setStall(response.data.data);
         setLoading(false);
       } catch (error) {
@@ -44,8 +45,8 @@ const LiveFoodStallDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/live-food-stall/${id}/reviews`, reviewForm);
-      const response = await axios.get(`http://localhost:5000/api/live-food-stall/${id}`);
+      await axios.post(`${API_URL}/live-food-stall/${id}/reviews`, reviewForm);
+      const response = await axios.get(`${API_URL}/live-food-stall/${id}`);
       setStall(response.data.data);
       setReviewForm({ userName: '', rating: 5, comment: '' });
       alert('Review submitted successfully!');

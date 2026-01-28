@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EditFlowerVendor = () => {
   const { id } = useParams();
@@ -66,7 +67,7 @@ const EditFlowerVendor = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `http://localhost:5000/api/flower-vendors/${id}`,
+        `${API_URL}/flower-vendors/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -232,7 +233,7 @@ const EditFlowerVendor = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/flower-vendors/${id}`,
+        `${API_URL}/flower-vendors/${id}`,
         formData,
         {
           headers: {

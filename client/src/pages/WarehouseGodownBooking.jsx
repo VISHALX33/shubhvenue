@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import WarehouseGodownBookingCard from '../components/WarehouseGodownBookingCard'
@@ -72,7 +73,7 @@ function WarehouseGodownBooking() {
         }
       }
 
-      const response = await axios.get('http://localhost:5000/api/warehouse-godown', { params })
+      const response = await axios.get(`${API_URL}/warehouse-godown`, { params })
       setWarehouses(response.data)
       
       // Extract unique cities

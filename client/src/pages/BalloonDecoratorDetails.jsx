@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import {
   FaBirthdayCake,
   FaStar,
@@ -33,7 +34,7 @@ const BalloonDecoratorDetails = () => {
   const fetchDecoratorDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/balloon-decorator/${id}`);
+      const response = await axios.get(`${API_URL}/balloon-decorator/${id}`);
       setDecorator(response.data.data);
     } catch (error) {
       console.error('Error fetching balloon decorator details:', error);
@@ -45,7 +46,7 @@ const BalloonDecoratorDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/balloon-decorator/${id}/reviews`, reviewForm);
+      await axios.post(`${API_URL}/balloon-decorator/${id}/reviews`, reviewForm);
       setReviewForm({ userName: '', rating: 5, comment: '' });
       fetchDecoratorDetails();
       alert('Review submitted successfully!');

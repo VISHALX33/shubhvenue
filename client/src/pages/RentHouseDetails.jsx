@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { 
   FaHome, FaStar, FaMapMarkerAlt, FaPhone, FaEnvelope, 
   FaWhatsapp, FaInstagram, FaGlobe, FaBed, FaBath, 
@@ -26,7 +27,7 @@ const RentHouseDetails = () => {
 
   const fetchHouseDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/rent-house/${id}`);
+      const response = await axios.get(`${API_URL}/rent-house/${id}`);
       setHouse(response.data);
       setLoading(false);
     } catch (error) {
@@ -38,7 +39,7 @@ const RentHouseDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/rent-house/${id}/reviews`, reviewForm);
+      await axios.post(`${API_URL}/rent-house/${id}/reviews`, reviewForm);
       setReviewForm({ userName: '', rating: 5, comment: '' });
       fetchHouseDetails();
     } catch (error) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import IceCreamCounterCard from '../components/IceCreamCounterCard';
 import { FaIceCream } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function IceCreamCounter() {
   const [counters, setCounters] = useState([]);
@@ -20,7 +21,7 @@ function IceCreamCounter() {
 
   const fetchCounters = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/ice-cream-counter');
+      const response = await axios.get(`${API_URL}/ice-cream-counter`);
       setCounters(response.data.data);
       setFilteredCounters(response.data.data);
       setLoading(false);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EditGenerator = () => {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ const EditGenerator = () => {
   const fetchListing = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/generators/${id}`, {
+      const response = await axios.get(`${API_URL}/generators/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -141,7 +142,7 @@ const EditGenerator = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/generators/${id}`,
+        `${API_URL}/generators/${id}`,
         formData,
         {
           headers: {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import MakeupArtistCard from '../components/MakeupArtistCard';
 import { FaFilter, FaTimes, FaPaintBrush } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function MakeupArtist() {
   const [artists, setArtists] = useState([]);
@@ -46,7 +47,7 @@ function MakeupArtist() {
       if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
       if (filters.minExperience) params.append('minExperience', filters.minExperience);
 
-      const response = await axios.get(`http://localhost:5000/api/makeup-artist?${params}`);
+      const response = await axios.get(`${API_URL}/makeup-artist?${params}`);
       setArtists(response.data.data);
       setLoading(false);
     } catch (err) {

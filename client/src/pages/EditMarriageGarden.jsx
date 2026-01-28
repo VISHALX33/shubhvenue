@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function EditMarriageGarden() {
   const { id } = useParams();
@@ -48,45 +49,101 @@ function EditMarriageGarden() {
 
   useEffect(() => {
     // Load listing data from location state or fetch from API
-    if (location.state?.listing) {
-      const listing = location.state.listing;
-      setFormData({
-        name: listing.name || '',
-        type: listing.type || 'Indoor Garden',
-        mainImage: listing.mainImage || '',
-        images: listing.images?.slice(0, 3) || ['', '', ''],
-        location: {
-          city: listing.location?.city || '',
-          area: listing.location?.area || '',
-          address: listing.location?.address || '',
-          pincode: listing.location?.pincode || ''
-        },
-        price: {
-          perDay: listing.price?.perDay || '',
-          perPlate: listing.price?.perPlate || ''
-        },
-        capacity: {
-          min: listing.capacity?.min || '',
-          max: listing.capacity?.max || ''
-        },
-        area: listing.area || '',
-        amenities: listing.amenities || [],
-        about: listing.about || '',
-        policies: {
-          advancePayment: listing.policies?.advancePayment || '',
-          cancellation: listing.policies?.cancellation || '',
-          decorationPolicy: listing.policies?.decorationPolicy || '',
-          parking: listing.policies?.parking || false,
-          alcoholAllowed: listing.policies?.alcoholAllowed || false
-        },
-        contactInfo: {
-          phone: listing.contactInfo?.phone || '',
-          email: listing.contactInfo?.email || '',
-          website: listing.contactInfo?.website || ''
+    const loadListingData = async () => {
+      if (location.state?.listing) {
+        const listing = location.state.listing;
+        setFormData({
+          name: listing.name || '',
+          type: listing.type || 'Indoor Garden',
+          mainImage: listing.mainImage || '',
+          images: listing.images?.slice(0, 3) || ['', '', ''],
+          location: {
+            city: listing.location?.city || '',
+            area: listing.location?.area || '',
+            address: listing.location?.address || '',
+            pincode: listing.location?.pincode || ''
+          },
+          price: {
+            perDay: listing.price?.perDay || '',
+            perPlate: listing.price?.perPlate || ''
+          },
+          capacity: {
+            min: listing.capacity?.min || '',
+            max: listing.capacity?.max || ''
+          },
+          area: listing.area || '',
+          amenities: listing.amenities || [],
+          about: listing.about || '',
+          policies: {
+            advancePayment: listing.policies?.advancePayment || '',
+            cancellation: listing.policies?.cancellation || '',
+            decorationPolicy: listing.policies?.decorationPolicy || '',
+            parking: listing.policies?.parking || false,
+            alcoholAllowed: listing.policies?.alcoholAllowed || false
+          },
+          contactInfo: {
+            phone: listing.contactInfo?.phone || '',
+            email: listing.contactInfo?.email || '',
+            website: listing.contactInfo?.website || ''
+          }
+        });
+      } else {
+        // Fetch from API if no state data
+        try {
+          const token = localStorage.getItem('token');
+          const response = await axios.get(
+            `${API_URL}/marriage-gardens/${id}`,
+            {
+              headers: { Authorization: `Bearer ${token}` }
+            }
+          );
+          
+          const listing = response.data.data;
+          setFormData({
+            name: listing.name || '',
+            type: listing.type || 'Indoor Garden',
+            mainImage: listing.mainImage || '',
+            images: listing.images?.slice(0, 3) || ['', '', ''],
+            location: {
+              city: listing.location?.city || '',
+              area: listing.location?.area || '',
+              address: listing.location?.address || '',
+              pincode: listing.location?.pincode || ''
+            },
+            price: {
+              perDay: listing.price?.perDay || '',
+              perPlate: listing.price?.perPlate || ''
+            },
+            capacity: {
+              min: listing.capacity?.min || '',
+              max: listing.capacity?.max || ''
+            },
+            area: listing.area || '',
+            amenities: listing.amenities || [],
+            about: listing.about || '',
+            policies: {
+              advancePayment: listing.policies?.advancePayment || '',
+              cancellation: listing.policies?.cancellation || '',
+              decorationPolicy: listing.policies?.decorationPolicy || '',
+              parking: listing.policies?.parking || false,
+              alcoholAllowed: listing.policies?.alcoholAllowed || false
+            },
+            contactInfo: {
+              phone: listing.contactInfo?.phone || '',
+              email: listing.contactInfo?.email || '',
+              website: listing.contactInfo?.website || ''
+            }
+          });
+        } catch (error) {
+          console.error('Error fetching listing:', error);
+          alert('Failed to load listing data');
+          navigate('/vendor/listings');
         }
-      });
-    }
-  }, [location.state]);
+      }
+    };
+    
+    loadListingData();
+  }, [location.state, id, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -143,7 +200,7 @@ function EditMarriageGarden() {
       };
 
       await axios.put(
-        `http://localhost:5000/api/marriage-gardens/${id}`,
+        `${API_URL}/marriage-gardens/${id}`,
         submitData,
         {
           headers: { Authorization: `Bearer ${token}` }

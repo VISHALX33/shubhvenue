@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import SoundSystemCard from '../components/SoundSystemCard';
+import API_URL from '../config/api';
 
 const SoundSystemBooking = () => {
   const [soundSystems, setSoundSystems] = useState([]);
@@ -31,7 +32,7 @@ const SoundSystemBooking = () => {
       if (filters.coverage) queryParams.append('coverage', filters.coverage);
 
       const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
-      const response = await axios.get(`http://localhost:5000/api/sound-systems${queryString}`);
+      const response = await axios.get(`${API_URL}/sound-systems${queryString}`);
       setSoundSystems(response.data.data);
     } catch (error) {
       console.error('Error fetching sound systems:', error);

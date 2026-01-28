@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TentCard from '../components/TentCard';
+import API_URL from '../config/api';
 
 function TentBooking() {
   const [tents, setTents] = useState([]);
@@ -32,7 +33,7 @@ function TentBooking() {
 
       const queryString = queryParams.toString();
       const response = await axios.get(
-        `http://localhost:5000/api/tents${queryString ? `?${queryString}` : ''}`
+        `${API_URL}/tents${queryString ? `?${queryString}` : ''}`
       );
       
       setTents(response.data.data);

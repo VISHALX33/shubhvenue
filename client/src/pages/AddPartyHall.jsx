@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function AddPartyHall() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ function AddPartyHall() {
       };
 
       await axios.post(
-        'http://localhost:5000/api/party-halls',
+        `${API_URL}/party-halls`,
         submitData,
         {
           headers: { Authorization: `Bearer ${token}` }

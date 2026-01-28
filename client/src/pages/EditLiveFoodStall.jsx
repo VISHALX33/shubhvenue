@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EditLiveFoodStall = () => {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const EditLiveFoodStall = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/live-food-stalls/${id}`, {
+      const response = await axios.get(`${API_URL}/live-food-stalls/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -209,7 +210,7 @@ const EditLiveFoodStall = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/live-food-stalls/${id}`,
+        `${API_URL}/live-food-stalls/${id}`,
         formData,
         {
           headers: {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import EventFurnitureCard from '../components/EventFurnitureCard';
 import { FaFilter, FaTimes, FaCouch } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function EventFurnitureRental() {
   const [furniture, setFurniture] = useState([]);
@@ -46,7 +47,7 @@ function EventFurnitureRental() {
       if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
       if (filters.minInventory) params.append('minInventory', filters.minInventory);
 
-      const response = await axios.get(`http://localhost:5000/api/event-furniture?${params}`);
+      const response = await axios.get(`${API_URL}/event-furniture?${params}`);
       setFurniture(response.data.data);
       setLoading(false);
     } catch (err) {

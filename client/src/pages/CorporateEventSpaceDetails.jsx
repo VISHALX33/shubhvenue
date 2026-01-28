@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 function CorporateEventSpaceDetails() {
   const { id } = useParams();
@@ -19,7 +20,7 @@ function CorporateEventSpaceDetails() {
   const fetchSpaceDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/corporate-event-spaces/${id}`);
+      const response = await axios.get(`${API_URL}/corporate-event-spaces/${id}`);
       setSpace(response.data.data);
     } catch (error) {
       console.error('Error fetching corporate event space details:', error);

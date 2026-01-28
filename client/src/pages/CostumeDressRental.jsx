@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import CostumeDressCard from '../components/CostumeDressCard';
 import { FaFilter, FaTimes, FaTshirt } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function CostumeDressRental() {
   const [costumes, setCostumes] = useState([]);
@@ -46,7 +47,7 @@ function CostumeDressRental() {
       if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
       if (filters.minInventory) params.append('minInventory', filters.minInventory);
 
-      const response = await axios.get(`http://localhost:5000/api/costume-dress?${params}`);
+      const response = await axios.get(`${API_URL}/costume-dress?${params}`);
       setCostumes(response.data.data);
       setLoading(false);
     } catch (err) {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BandBajaCard from '../components/BandBajaCard';
+import API_URL from '../config/api';
 
 function BandBajaBooking() {
   const [bandBajas, setBandBajas] = useState([]);
@@ -31,7 +32,7 @@ function BandBajaBooking() {
       if (filters.maxPrice) queryParams.append('maxPrice', filters.maxPrice);
 
       const queryString = queryParams.toString();
-      const url = `http://localhost:5000/api/band-baja${queryString ? `?${queryString}` : ''}`;
+      const url = `${API_URL}/band-baja${queryString ? `?${queryString}` : ''}`;
       
       const response = await axios.get(url);
       setBandBajas(response.data.data);

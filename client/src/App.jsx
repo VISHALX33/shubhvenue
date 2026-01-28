@@ -53,7 +53,7 @@ import AddCarRental from './pages/AddCarRental'
 import AddFlowerVendor from './pages/AddFlowerVendor'
 import AddBalloonDecorator from './pages/AddBalloonDecorator'
 import AddFurnitureRental from './pages/AddFurnitureRental'
-import EditMarriageGarden from './pages/EditMarriageGarden'
+import EditListing from './pages/EditListing'
 import EditEventManagement from './pages/EditEventManagement'
 import EditTent from './pages/EditTent'
 import EditStageSetup from './pages/EditStageSetup'
@@ -854,11 +854,11 @@ function App() {
           </div>
         } />
         
-        <Route path="/vendor/edit-listing/:id" element={
+        <Route path="/vendor/edit-listing/:type/:id" element={
           <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
             <Navbar />
             <ProtectedRoute allowedRoles={['vendor']}>
-              <EditMarriageGarden />
+              <EditListing />
             </ProtectedRoute>
             <Footer />
           </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function AddLodge() {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ function AddLodge() {
       };
 
       await axios.post(
-        'http://localhost:5000/api/lodges',
+        `${API_URL}/lodges`,
         submitData,
         {
           headers: { Authorization: `Bearer ${token}` }

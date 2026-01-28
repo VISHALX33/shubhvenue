@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaStore } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function VendorListings() {
   const { user } = useAuth();
@@ -20,7 +21,7 @@ function VendorListings() {
       setLoading(true);
       const token = localStorage.getItem('token');
       // This will fetch all listings created by this vendor
-      const response = await axios.get(`http://localhost:5000/api/vendor/listings`, {
+      const response = await axios.get(`${API_URL}/vendor/listings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setListings(response.data.data || []);
@@ -36,7 +37,7 @@ function VendorListings() {
     if (window.confirm('Are you sure you want to delete this listing?')) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:5000/api/vendor/listings/${listingId}`, {
+        await axios.delete(`${API_URL}/vendor/listings/${listingId}`, {
           headers: { Authorization: `Bearer ${token}` },
           data: { type }
         });
@@ -62,73 +63,49 @@ function VendorListings() {
     'Open Ground',
     'Corporate Event Space',
     'DJ',
-    'Tent',
+    'Band Baja',
+    'Dhol Tasha',
+    'Shehnai',
     'Photographer',
     'Videographer',
+    'Tent',
     'Event Management',
     'Stage Setup',
     'Sound System',
     'Lighting Setup',
     'Generator',
     'Catering',
-    'Band Baja',
-    'Dhol Tasha',
-    'Shehnai',
     'Wedding Planner',
     'Mehndi Artist',
     'Makeup Artist',
-    'Costume/Dress Rental',
+    'Costume Dress',
     'Event Furniture',
-    'Furniture Rental',
-    'Bouncy Kids Games',
-    'Car Rental',
+    'Bouncy Kids Game',
+    'Car Rental Wedding',
     'Flower Vendor',
     'Balloon Decorator',
     'Sweet Shop',
     'Ice Cream Counter',
     'Juice Counter',
-    'Live Food Stall'
+    'Live Food Stall',
+    'Flat Booking',
+    'Rent House',
+    'PG/Hostel',
+    'Shop Booking',
+    'Warehouse/Godown',
+    'Office Space',
+    'Jameen/Plot',
+    'Commercial Property'
   ];
 
   const filteredListings = filter === 'all' 
     ? listings 
-    : listings.filter(listing => listing.serviceType?.toLowerCase() === filter.toLowerCase());
+    : listings.filter(listing => listing.serviceType === filter);
 
   // Convert service type to URL format for edit routes
   const getEditRoute = (listing) => {
-    const serviceTypeMap = {
-      'Event Management': 'event-management',
-      'Tent': 'tent',
-      'Stage Setup': 'stage-setup',
-      'Sound System': 'sound-system',
-      'Lighting Setup': 'lighting-setup',
-      'Generator': 'generator',
-      'Catering': 'catering',
-      'Sweet Shop': 'sweet-shop',
-      'Ice Cream Counter': 'ice-cream-counter',
-      'Juice Counter': 'juice-counter',
-      'Live Food Stall': 'live-food-stall',
-      'Wedding Planner': 'wedding-planner',
-      'Mehndi Artist': 'mehndi-artist',
-      'Makeup Artist': 'makeup-artist',
-      'Costume/Dress Rental': 'costume-dress',
-      'Costume Dress': 'costume-dress',
-      'Bouncy Kids Games': 'bouncy-kids-game',
-      'Bouncy Kids Game': 'bouncy-kids-game',
-      'Car Rental': 'car-rental',
-      'Flower Vendor': 'flower-vendor',
-      'Balloon Decorator': 'balloon-decorator',
-      'Furniture Rental': 'furniture-rental',
-      'Event Furniture': 'furniture-rental',
-      'DJ': 'dj',
-      'Band Baja': 'band-baja',
-      'Dhol Tasha': 'dhol-tasha',
-      'Shehnai': 'shehnai',
-      'Photographer': 'photographer',
-      'Videographer': 'videographer',
-    };
-    
-    const urlSlug = serviceTypeMap[listing.serviceType] || listing.serviceType?.toLowerCase().replace(/\s+/g, '-');
+    // Use listingType from backend if available, otherwise create from serviceType
+    const urlSlug = listing.listingType || listing.serviceType?.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-');
     return `/vendor/edit-listing/${urlSlug}/${listing._id}`;
   };
 
@@ -211,7 +188,7 @@ function VendorListings() {
                   
                   <div className="flex gap-2">
                     <button
-                      onClick={() => navigate(getEditRoute(listing))}
+                      onClick={() => navigate(getEditRoute(listing), { state: { listing } })}
                       className="flex-1 bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center"
                     >
                       <FaEdit className="mr-2" />

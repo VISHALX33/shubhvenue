@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import {
   FaMapMarkerAlt,
   FaStar,
@@ -29,7 +30,7 @@ const SweetShopOrderDetails = () => {
   useEffect(() => {
     const fetchSweetShop = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/sweet-shop-orders/${id}`);
+        const response = await axios.get(`${API_URL}/sweet-shop-orders/${id}`);
         setSweetShop(response.data.data);
         setLoading(false);
       } catch (error) {
@@ -44,8 +45,8 @@ const SweetShopOrderDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/sweet-shop-orders/${id}/reviews`, reviewForm);
-      const response = await axios.get(`http://localhost:5000/api/sweet-shop-orders/${id}`);
+      await axios.post(`${API_URL}/sweet-shop-orders/${id}/reviews`, reviewForm);
+      const response = await axios.get(`${API_URL}/sweet-shop-orders/${id}`);
       setSweetShop(response.data.data);
       setReviewForm({ userName: '', rating: 5, comment: '' });
       alert('Review submitted successfully!');

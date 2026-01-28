@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function EditShehnai() {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ function EditShehnai() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/shehnais/${id}`, {
+      const response = await axios.get(`${API_URL}/shehnais/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -95,7 +96,7 @@ function EditShehnai() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/shehnais/${id}`, formData, {
+        `${API_URL}/shehnais/${id}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

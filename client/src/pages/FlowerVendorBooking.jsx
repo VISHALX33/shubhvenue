@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FlowerVendorCard from '../components/FlowerVendorCard';
 import { FaLeaf, FaFilter } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function FlowerVendorBooking() {
   const [vendors, setVendors] = useState([]);
@@ -46,7 +47,7 @@ function FlowerVendorBooking() {
   const fetchVendors = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/flower-vendor');
+      const response = await axios.get(`${API_URL}/flower-vendor`);
       setVendors(response.data.data);
       setFilteredVendors(response.data.data);
     } catch (error) {

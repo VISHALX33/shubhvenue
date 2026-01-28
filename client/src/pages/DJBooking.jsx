@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import DJCard from '../components/DJCard';
+import API_URL from '../config/api';
 
 function DJBooking() {
   const [djs, setDJs] = useState([]);
@@ -30,7 +31,7 @@ function DJBooking() {
 
       const queryString = queryParams.toString();
       const response = await axios.get(
-        `http://localhost:5000/api/djs${queryString ? `?${queryString}` : ''}`
+        `${API_URL}/djs${queryString ? `?${queryString}` : ''}`
       );
       
       setDJs(response.data.data);

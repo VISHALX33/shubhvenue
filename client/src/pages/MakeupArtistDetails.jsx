@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { 
   FaMapMarkerAlt, 
   FaStar, 
@@ -34,7 +35,7 @@ const MakeupArtistDetails = () => {
   const fetchArtistDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/makeup-artist/${id}`);
+      const response = await axios.get(`${API_URL}/makeup-artist/${id}`);
       setArtist(response.data.data);
       setLoading(false);
     } catch (err) {

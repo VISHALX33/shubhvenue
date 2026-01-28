@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import HomestayCard from '../components/HomestayCard';
 import { FaHome } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function HomestayBooking() {
   const [homestays, setHomestays] = useState([]);
@@ -23,7 +24,7 @@ function HomestayBooking() {
     try {
       setLoading(true);
       const queryParams = new URLSearchParams(filterParams).toString();
-      const response = await axios.get(`http://localhost:5000/api/homestays?${queryParams}`);
+      const response = await axios.get(`${API_URL}/homestays?${queryParams}`);
       setHomestays(response.data.data);
     } catch (error) {
       console.error('Error fetching homestays:', error);

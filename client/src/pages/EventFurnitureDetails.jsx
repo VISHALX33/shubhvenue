@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { 
   FaCouch, FaMapMarkerAlt, FaStar, FaPhone, FaEnvelope, 
   FaGlobe, FaInstagram, FaFacebook, FaWhatsapp, FaBox,
@@ -23,7 +24,7 @@ function EventFurnitureDetails() {
 
   const fetchFurnitureDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/event-furniture/${id}`);
+      const response = await axios.get(`${API_URL}/event-furniture/${id}`);
       setFurniture(response.data.data);
       setLoading(false);
     } catch (err) {
@@ -41,7 +42,7 @@ function EventFurnitureDetails() {
 
     setSubmittingReview(true);
     try {
-      await axios.post(`http://localhost:5000/api/event-furniture/${id}/reviews`, newReview);
+      await axios.post(`${API_URL}/event-furniture/${id}/reviews`, newReview);
       setNewReview({ userName: '', rating: 5, comment: '' });
       fetchFurnitureDetails();
       alert('Review submitted successfully!');

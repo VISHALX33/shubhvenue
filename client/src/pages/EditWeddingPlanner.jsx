@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EditWeddingPlanner = () => {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ const EditWeddingPlanner = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/wedding-planners/${id}`, {
+      const response = await axios.get(`${API_URL}/wedding-planners/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -206,7 +207,7 @@ const EditWeddingPlanner = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/wedding-planners/${id}`,
+        `${API_URL}/wedding-planners/${id}`,
         formData,
         {
           headers: {

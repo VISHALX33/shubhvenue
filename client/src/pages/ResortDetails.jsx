@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 function ResortDetails() {
   const { id } = useParams();
@@ -19,7 +20,7 @@ function ResortDetails() {
   const fetchResortDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/resorts/${id}`);
+      const response = await axios.get(`${API_URL}/resorts/${id}`);
       setResort(response.data.data);
     } catch (error) {
       console.error('Error fetching resort details:', error);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CommunityHallCard from '../components/CommunityHallCard';
+import API_URL from '../config/api';
 
 function CommunityHallBooking() {
   const [communityHalls, setCommunityHalls] = useState([]);
@@ -32,7 +33,7 @@ function CommunityHallBooking() {
 
       const queryString = queryParams.toString();
       const response = await axios.get(
-        `http://localhost:5000/api/community-halls${queryString ? `?${queryString}` : ''}`
+        `${API_URL}/community-halls${queryString ? `?${queryString}` : ''}`
       );
       
       setCommunityHalls(response.data.data);

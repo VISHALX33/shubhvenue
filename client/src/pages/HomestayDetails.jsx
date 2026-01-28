@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaMapMarkerAlt, FaBed, FaUsers, FaStar, FaRupeeSign, FaPhone, FaEnvelope, FaGlobe, FaArrowLeft, FaCheckCircle, FaClock, FaBan, FaParking, FaSmoking } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function HomestayDetails() {
   const { id } = useParams();
@@ -18,7 +19,7 @@ function HomestayDetails() {
   const fetchHomestay = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/homestays/${id}`);
+      const response = await axios.get(`${API_URL}/homestays/${id}`);
       setHomestay(response.data.data);
     } catch (error) {
       console.error('Error fetching homestay:', error);

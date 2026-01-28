@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function EditBandBaja() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ function EditBandBaja() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/band-bajas/${id}`, {
+      const response = await axios.get(`${API_URL}/band-bajas/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -114,7 +115,7 @@ function EditBandBaja() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/band-bajas/${id}`, formData, {
+        `${API_URL}/band-bajas/${id}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

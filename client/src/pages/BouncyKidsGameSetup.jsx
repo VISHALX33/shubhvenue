@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BouncyKidsGameCard from '../components/BouncyKidsGameCard';
 import { FaFilter, FaTimes, FaGamepad } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function BouncyKidsGameSetup() {
   const [games, setGames] = useState([]);
@@ -46,7 +47,7 @@ function BouncyKidsGameSetup() {
       if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
       if (filters.minInventory) params.append('minInventory', filters.minInventory);
 
-      const response = await axios.get(`http://localhost:5000/api/bouncy-kids-game?${params}`);
+      const response = await axios.get(`${API_URL}/bouncy-kids-game?${params}`);
       setGames(response.data.data);
       setLoading(false);
     } catch (err) {

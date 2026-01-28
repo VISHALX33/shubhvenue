@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ResortCard from '../components/ResortCard';
+import API_URL from '../config/api';
 
 function ResortStayBooking() {
   const [resorts, setResorts] = useState([]);
@@ -22,7 +23,7 @@ function ResortStayBooking() {
     try {
       setLoading(true);
       const queryParams = new URLSearchParams(filterParams).toString();
-      const response = await axios.get(`http://localhost:5000/api/resorts?${queryParams}`);
+      const response = await axios.get(`${API_URL}/resorts?${queryParams}`);
       setResorts(response.data.data);
     } catch (error) {
       console.error('Error fetching resorts:', error);

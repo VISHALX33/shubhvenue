@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { FaUpload } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function AddMarriageGarden() {
   const navigate = useNavigate();
@@ -91,6 +92,8 @@ function AddMarriageGarden() {
     setLoading(true);
 
     try {
+      const token = localStorage.getItem('token');
+      
       const submitData = {
         ...formData,
         price: {
@@ -101,19 +104,19 @@ function AddMarriageGarden() {
           min: Number(formData.capacity.min),
           max: Number(formData.capacity.max)
         },
-        area: Number(formData.area),
-        vendorId: user._id
+        area: Number(formData.area)
+        // vendorId will be set by backend from auth token
       };
 
-      await axios.post('http://localhost:5000/api/marriage-gardens', submitData, {
-        headers: { Authorization: `Bearer ${user?.token}` }
+      await axios.post(`${API_URL}/marriage-gardens`, submitData, {
+        headers: { Authorization: `Bearer ${token}` }
       });
 
       alert('Marriage Garden listing created successfully!');
       navigate('/vendor/listings');
     } catch (error) {
       console.error('Error creating listing:', error);
-      alert('Failed to create listing. Please try again.');
+      alert(error.response?.data?.error || 'Failed to create listing. Please try again.');
     } finally {
       setLoading(false);
     }

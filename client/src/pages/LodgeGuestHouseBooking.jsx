@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import LodgeGuestHouseCard from '../components/LodgeGuestHouseCard';
 import { FaHome } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function LodgeGuestHouseBooking() {
   const [lodges, setLodges] = useState([]);
@@ -25,7 +26,7 @@ function LodgeGuestHouseBooking() {
       const queryParams = new URLSearchParams(
         Object.fromEntries(Object.entries(filterParams).filter(([_, value]) => value !== ''))
       ).toString();
-      const response = await axios.get(`http://localhost:5000/api/lodges?${queryParams}`);
+      const response = await axios.get(`${API_URL}/lodges?${queryParams}`);
       setLodges(response.data.data || response.data);
     } catch (error) {
       console.error('Error fetching lodges:', error);

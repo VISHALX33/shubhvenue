@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import ShehnaiCard from '../components/ShehnaiCard';
+import API_URL from '../config/api';
 
 const ShehnaiGroup = () => {
   const [shehnais, setShehnais] = useState([]);
@@ -32,7 +33,7 @@ const ShehnaiGroup = () => {
       if (filterParams.minPrice) params.append('minPrice', filterParams.minPrice);
       if (filterParams.maxPrice) params.append('maxPrice', filterParams.maxPrice);
 
-      const response = await axios.get(`http://localhost:5000/api/shehnai?${params.toString()}`);
+      const response = await axios.get(`${API_URL}/shehnai?${params.toString()}`);
       setShehnais(response.data.data);
     } catch (error) {
       console.error('Error fetching shehnais:', error);

@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -10,11 +11,17 @@ function MarriageGardenDetails() {
   const [marriageGarden, setMarriageGarden] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('about')
+  const [showReviewModal, setShowReviewModal] = useState(false)
+  const [reviewForm, setReviewForm] = useState({
+    rating: 5,
+    comment: ''
+  })
+  const [submittingReview, setSubmittingReview] = useState(false)
 
   useEffect(() => {
     const fetchMarriageGarden = async () => {
       try {
-        const response = await axios.get(`/api/marriage-gardens/${id}`)
+        const response = await axios.get(`${API_URL}/marriage-gardens/${id}`)
         setMarriageGarden(response.data.data)
         setLoading(false)
       } catch (error) {
@@ -27,6 +34,43 @@ function MarriageGardenDetails() {
       fetchMarriageGarden()
     }
   }, [id])
+
+  const handleWriteReview = () => {
+    if (!user) {
+      alert('Please login to write a review')
+      navigate('/guest/login')
+      return
+    }
+    setShowReviewModal(true)
+  }
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault()
+    setSubmittingReview(true)
+
+    try {
+      const token = localStorage.getItem('token')
+      const response = await axios.post(
+        `${API_URL}/marriage-gardens/${id}/reviews`,
+        reviewForm,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+
+      // Update local state with new review
+      setMarriageGarden(response.data.data)
+      setShowReviewModal(false)
+      setReviewForm({ rating: 5, comment: '' })
+      setActiveTab('reviews')
+      alert('Review submitted successfully!')
+    } catch (error) {
+      console.error('Error submitting review:', error)
+      alert(error.response?.data?.error || 'Failed to submit review')
+    } finally {
+      setSubmittingReview(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -154,7 +198,10 @@ function MarriageGardenDetails() {
               <button className="flex-1 min-w-[200px] border-2 border-indigo-600 text-indigo-600 py-4 px-6 rounded-lg hover:bg-indigo-50 transition font-semibold text-lg">
                 Contact Venue
               </button>
-              <button className="border-2 border-gray-300 text-gray-700 py-4 px-6 rounded-lg hover:bg-gray-50 transition font-semibold">
+              <button 
+                onClick={handleWriteReview}
+                className="border-2 border-gray-300 text-gray-700 py-4 px-6 rounded-lg hover:bg-gray-50 transition font-semibold"
+              >
                 <svg className="w-6 h-6 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                 </svg>
@@ -339,6 +386,79 @@ function MarriageGardenDetails() {
           </div>
         </div>
       </div>
+
+      {/* Review Modal */}
+      {showReviewModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-2xl font-bold text-gray-800">Write a Review</h3>
+              <button
+                onClick={() => setShowReviewModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmitReview}>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2">Rating *</label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setReviewForm({ ...reviewForm, rating: star })}
+                      className="focus:outline-none"
+                    >
+                      <svg
+                        className={`w-8 h-8 ${
+                          star <= reviewForm.rating ? 'text-yellow-500 fill-current' : 'text-gray-300'
+                        }`}
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                      </svg>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-gray-700 font-semibold mb-2">Your Review *</label>
+                <textarea
+                  value={reviewForm.comment}
+                  onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
+                  required
+                  rows="4"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  placeholder="Share your experience..."
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowReviewModal(false)}
+                  className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 transition font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submittingReview}
+                  className="flex-1 bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition font-semibold disabled:opacity-50"
+                >
+                  {submittingReview ? 'Submitting...' : 'Submit Review'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

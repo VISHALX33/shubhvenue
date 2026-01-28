@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { FaStore, FaCalendarAlt, FaChartLine, FaCog, FaUsers, FaBoxOpen } from 'react-icons/fa';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function VendorDashboard() {
   const { user } = useAuth();
@@ -22,17 +23,23 @@ function VendorDashboard() {
       const token = localStorage.getItem('token');
       
       // Fetch all vendor listings from the unified endpoint
-      const response = await axios.get('http://localhost:5000/api/vendor/listings', {
+      const listingsResponse = await axios.get(`${API_URL}/vendor/listings`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      // Fetch booking stats
+      const bookingsResponse = await axios.get(`${API_URL}/bookings/vendor/stats`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      if (response.data.success) {
+      if (listingsResponse.data.success) {
         // Count total listings across all services
-        const allListings = response.data.data || [];
+        const allListings = listingsResponse.data.data || [];
+        const bookingStats = bookingsResponse.data.success ? bookingsResponse.data.data : { total: 0 };
         
         setStats({
           totalListings: allListings.length,
-          totalBookings: 0, // Will be updated when booking system is implemented
+          totalBookings: bookingStats.total || 0,
           loading: false
         });
       }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function AddDholTasha() {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ function AddDholTasha() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/dhol-tashas', formData, {
+      const response = await axios.post(`${API_URL}/dhol-tashas`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

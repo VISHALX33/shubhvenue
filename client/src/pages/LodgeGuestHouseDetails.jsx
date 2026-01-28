@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function LodgeGuestHouseDetails() {
   const { id } = useParams();
@@ -17,7 +18,7 @@ function LodgeGuestHouseDetails() {
   const fetchLodgeDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/lodges/${id}`);
+      const response = await axios.get(`${API_URL}/lodges/${id}`);
       setLodge(response.data.data);
     } catch (error) {
       console.error('Error fetching lodge details:', error);

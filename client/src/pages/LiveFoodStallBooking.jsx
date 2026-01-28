@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LiveFoodStallCard from '../components/LiveFoodStallCard';
 import { FaUtensils, FaFilter } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function LiveFoodStallBooking() {
   const [stalls, setStalls] = useState([]);
@@ -20,7 +21,7 @@ function LiveFoodStallBooking() {
 
   const fetchStalls = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/live-food-stall');
+      const response = await axios.get(`${API_URL}/live-food-stall`);
       setStalls(response.data.data);
       setFilteredStalls(response.data.data);
       setLoading(false);

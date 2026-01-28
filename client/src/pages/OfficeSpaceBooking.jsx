@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import OfficeSpaceBookingCard from '../components/OfficeSpaceBookingCard'
@@ -69,7 +70,7 @@ function OfficeSpaceBooking() {
         }
       }
 
-      const response = await axios.get('http://localhost:5000/api/office-space', { params })
+      const response = await axios.get(`${API_URL}/office-space`, { params })
       setOffices(response.data)
     } catch (error) {
       console.error('Error fetching offices:', error)

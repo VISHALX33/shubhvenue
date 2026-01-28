@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function AddPhotographer() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function AddPhotographer() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/photographers', formData, {
+      const response = await axios.post(`${API_URL}/photographers`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

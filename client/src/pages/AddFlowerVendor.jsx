@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const AddFlowerVendor = () => {
   const navigate = useNavigate();
@@ -203,7 +204,7 @@ const AddFlowerVendor = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5000/api/flower-vendors',
+        `${API_URL}/flower-vendors`,
         formData,
         {
           headers: {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import {
   FaCar,
   FaStar,
@@ -33,7 +34,7 @@ const CarRentalWeddingDetails = () => {
   const fetchRentalDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/car-rental-wedding/${id}`);
+      const response = await axios.get(`${API_URL}/car-rental-wedding/${id}`);
       setRental(response.data.data);
     } catch (error) {
       console.error('Error fetching car rental details:', error);
@@ -45,7 +46,7 @@ const CarRentalWeddingDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/car-rental-wedding/${id}/reviews`, reviewForm);
+      await axios.post(`${API_URL}/car-rental-wedding/${id}/reviews`, reviewForm);
       setReviewForm({ userName: '', rating: 5, comment: '' });
       fetchRentalDetails();
       alert('Review submitted successfully!');

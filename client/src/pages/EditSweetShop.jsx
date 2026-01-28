@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EditSweetShop = () => {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const EditSweetShop = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/sweet-shops/${id}`, {
+      const response = await axios.get(`${API_URL}/sweet-shops/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -201,7 +202,7 @@ const EditSweetShop = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/sweet-shops/${id}`,
+        `${API_URL}/sweet-shops/${id}`,
         formData,
         {
           headers: {

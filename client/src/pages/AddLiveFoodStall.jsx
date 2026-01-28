@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const AddLiveFoodStall = () => {
   const navigate = useNavigate();
@@ -185,7 +186,7 @@ const AddLiveFoodStall = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5000/api/live-food-stalls',
+        `${API_URL}/live-food-stalls`,
         formData,
         {
           headers: {

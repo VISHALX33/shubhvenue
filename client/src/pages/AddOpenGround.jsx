@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function AddOpenGround() {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ function AddOpenGround() {
       };
 
       await axios.post(
-        'http://localhost:5000/api/open-grounds',
+        `${API_URL}/open-grounds`,
         submitData,
         {
           headers: { Authorization: `Bearer ${token}` }

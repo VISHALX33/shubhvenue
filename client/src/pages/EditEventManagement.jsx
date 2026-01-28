@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function EditEventManagement() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ function EditEventManagement() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/event-management/${id}`, {
+      const response = await axios.get(`${API_URL}/event-management/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -86,7 +87,7 @@ function EditEventManagement() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`http://localhost:5000/api/event-management/${id}`, formData, {
+      const response = await axios.put(`${API_URL}/event-management/${id}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

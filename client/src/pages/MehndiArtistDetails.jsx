@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { 
   FaMapMarkerAlt, FaPhone, FaEnvelope, FaGlobe, FaWhatsapp, FaInstagram,
   FaStar, FaPalette, FaBriefcase, FaAward, FaHeart, FaShare, FaArrowLeft, FaCheckCircle
@@ -21,7 +22,7 @@ const MehndiArtistDetails = () => {
   const fetchArtistDetails = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/mehndi-artist/${id}`);
+      const response = await axios.get(`${API_URL}/mehndi-artist/${id}`);
       setArtist(response.data.data);
     } catch (error) {
       console.error('Error fetching mehndi artist details:', error);

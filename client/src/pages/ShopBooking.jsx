@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import ShopBookingCard from '../components/ShopBookingCard'
@@ -72,7 +73,7 @@ function ShopBooking() {
         }
       }
 
-      const response = await axios.get('http://localhost:5000/api/shop', { params })
+      const response = await axios.get(`${API_URL}/shop`, { params })
       setShops(response.data)
       
       // Extract unique cities

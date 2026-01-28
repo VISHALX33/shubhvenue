@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import MehndiArtistCard from '../components/MehndiArtistCard';
 import { FaSearch, FaFilter, FaPalette, FaHeart } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 const MehndiArtist = () => {
   const [artists, setArtists] = useState([]);
@@ -25,7 +26,7 @@ const MehndiArtist = () => {
   const fetchArtists = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/mehndi-artist');
+      const response = await axios.get(`${API_URL}/mehndi-artist`);
       setArtists(response.data.data);
       setFilteredArtists(response.data.data);
     } catch (error) {
@@ -52,7 +53,7 @@ const MehndiArtist = () => {
         }
       });
       
-      const response = await axios.get(`http://localhost:5000/api/mehndi-artist?${queryParams}`);
+      const response = await axios.get(`${API_URL}/mehndi-artist?${queryParams}`);
       setFilteredArtists(response.data.data);
     } catch (error) {
       console.error('Error applying filters:', error);

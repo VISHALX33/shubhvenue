@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import StageSetupCard from '../components/StageSetupCard';
+import API_URL from '../config/api';
 
 function StageSetupBooking() {
   const [stageSetups, setStageSetups] = useState([]);
@@ -29,7 +30,7 @@ function StageSetupBooking() {
       if (filters.capacity) queryParams.append('capacity', filters.capacity);
 
       const queryString = queryParams.toString();
-      const url = `http://localhost:5000/api/stage-setups${queryString ? `?${queryString}` : ''}`;
+      const url = `${API_URL}/stage-setups${queryString ? `?${queryString}` : ''}`;
       
       const response = await axios.get(url);
       setStageSetups(response.data.data);

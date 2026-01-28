@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const PhotographerDetails = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const PhotographerDetails = () => {
   const fetchPhotographerDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/photographers/${id}`);
+      const response = await axios.get(`${API_URL}/photographers/${id}`);
       setPhotographer(response.data.data);
       setLoading(false);
     } catch (error) {

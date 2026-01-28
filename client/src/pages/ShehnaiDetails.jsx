@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 const ShehnaiDetails = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const ShehnaiDetails = () => {
 
   const fetchShehnaiDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/shehnai/${id}`);
+      const response = await axios.get(`${API_URL}/shehnai/${id}`);
       setShehnai(response.data.data);
       setLoading(false);
     } catch (error) {

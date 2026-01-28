@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import {
   FaStore,
   FaMapMarkerAlt,
@@ -34,7 +35,7 @@ const ShopBookingDetails = () => {
 
   const fetchShopDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/shop/${id}`);
+      const response = await axios.get(`${API_URL}/shop/${id}`);
       setShop(response.data);
       setLoading(false);
     } catch (error) {
@@ -46,7 +47,7 @@ const ShopBookingDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/shop/${id}/reviews`, reviewForm);
+      await axios.post(`${API_URL}/shop/${id}/reviews`, reviewForm);
       setReviewForm({ userName: '', rating: 5, comment: '' });
       fetchShopDetails();
     } catch (error) {

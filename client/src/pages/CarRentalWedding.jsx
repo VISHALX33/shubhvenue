@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CarRentalWeddingCard from '../components/CarRentalWeddingCard';
 import { FaCar, FaFilter } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function CarRentalWedding() {
   const [carRentals, setCarRentals] = useState([]);
@@ -46,7 +47,7 @@ function CarRentalWedding() {
   const fetchCarRentals = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/car-rental-wedding');
+      const response = await axios.get(`${API_URL}/car-rental-wedding`);
       setCarRentals(response.data.data);
       setFilteredRentals(response.data.data);
     } catch (error) {

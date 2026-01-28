@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function AddResort() {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ function AddResort() {
       };
 
       await axios.post(
-        'http://localhost:5000/api/resorts',
+        `${API_URL}/resorts`,
         submitData,
         {
           headers: { Authorization: `Bearer ${token}` }

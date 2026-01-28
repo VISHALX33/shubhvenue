@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FlatBookingCard from '../components/FlatBookingCard';
 import { FaHome, FaFilter } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function FlatBooking() {
   const [flats, setFlats] = useState([]);
@@ -26,7 +27,7 @@ function FlatBooking() {
 
   const fetchFlats = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/flat-booking');
+      const response = await axios.get(`${API_URL}/flat-booking`);
       setFlats(response.data);
       setFilteredFlats(response.data);
       setLoading(false);

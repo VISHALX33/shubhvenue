@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import PartyHallCard from '../components/PartyHallCard'
@@ -30,7 +31,7 @@ function PartyHallBooking() {
       if (filters.type) queryParams.append('type', filters.type)
 
       const response = await axios.get(
-        `http://localhost:5000/api/party-halls${queryParams.toString() ? '?' + queryParams.toString() : ''}`
+        `${API_URL}/party-halls${queryParams.toString() ? '?' + queryParams.toString() : ''}`
       )
       setPartyHalls(response.data.data)
     } catch (error) {

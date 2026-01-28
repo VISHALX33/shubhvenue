@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SweetShopOrderCard from '../components/SweetShopOrderCard';
 import { FaCandyCane } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function SweetShopOrders() {
   const [sweetShops, setSweetShops] = useState([]);
@@ -20,7 +21,7 @@ function SweetShopOrders() {
 
   const fetchSweetShops = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/sweet-shop-orders');
+      const response = await axios.get(`${API_URL}/sweet-shop-orders`);
       setSweetShops(response.data.data);
       setFilteredShops(response.data.data);
       setLoading(false);

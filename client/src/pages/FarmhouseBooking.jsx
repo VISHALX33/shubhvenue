@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import FarmHouseCard from '../components/FarmHouseCard';
+import API_URL from '../config/api';
 
 function FarmhouseBooking() {
   const [farmHouses, setFarmHouses] = useState([]);
@@ -22,7 +23,7 @@ function FarmhouseBooking() {
     try {
       setLoading(true);
       const queryParams = new URLSearchParams(filterParams).toString();
-      const response = await axios.get(`http://localhost:5000/api/farm-houses?${queryParams}`);
+      const response = await axios.get(`${API_URL}/farm-houses?${queryParams}`);
       setFarmHouses(response.data.data);
     } catch (error) {
       console.error('Error fetching farm houses:', error);

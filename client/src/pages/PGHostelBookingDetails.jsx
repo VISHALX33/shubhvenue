@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import {
   FaHome,
   FaMapMarkerAlt,
@@ -34,7 +35,7 @@ const PGHostelBookingDetails = () => {
 
   const fetchPGDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/pg-hostel/${id}`);
+      const response = await axios.get(`${API_URL}/pg-hostel/${id}`);
       setPG(response.data);
       setLoading(false);
     } catch (error) {
@@ -46,7 +47,7 @@ const PGHostelBookingDetails = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/api/pg-hostel/${id}/reviews`, reviewForm);
+      await axios.post(`${API_URL}/pg-hostel/${id}/reviews`, reviewForm);
       setReviewForm({ userName: '', rating: 5, comment: '' });
       fetchPGDetails();
     } catch (error) {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function EditStageSetup() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ function EditStageSetup() {
   const fetchListing = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/stage-setups/${id}`, {
+      const response = await axios.get(`${API_URL}/stage-setups/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -75,7 +76,7 @@ function EditStageSetup() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put(`http://localhost:5000/api/stage-setups/${id}`, formData, {
+      const response = await axios.put(`${API_URL}/stage-setups/${id}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

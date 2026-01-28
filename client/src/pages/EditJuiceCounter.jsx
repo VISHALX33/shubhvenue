@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EditJuiceCounter = () => {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const EditJuiceCounter = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/juice-counters/${id}`, {
+      const response = await axios.get(`${API_URL}/juice-counters/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -209,7 +210,7 @@ const EditJuiceCounter = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/juice-counters/${id}`,
+        `${API_URL}/juice-counters/${id}`,
         formData,
         {
           headers: {

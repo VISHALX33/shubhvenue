@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CorporateEventSpaceCard from '../components/CorporateEventSpaceCard';
+import API_URL from '../config/api';
 
 function CorporateEventSpace() {
   const [corporateEventSpaces, setCorporateEventSpaces] = useState([]);
@@ -32,7 +33,7 @@ function CorporateEventSpace() {
 
       const queryString = queryParams.toString();
       const response = await axios.get(
-        `http://localhost:5000/api/corporate-event-spaces${queryString ? `?${queryString}` : ''}`
+        `${API_URL}/corporate-event-spaces${queryString ? `?${queryString}` : ''}`
       );
       
       setCorporateEventSpaces(response.data.data);

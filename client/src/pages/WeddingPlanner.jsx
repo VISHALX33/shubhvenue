@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import WeddingPlannerCard from '../components/WeddingPlannerCard';
 import { FaSearch, FaFilter, FaBriefcase, FaHeart } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function WeddingPlanner() {
   const [weddingPlanners, setWeddingPlanners] = useState([]);
@@ -30,7 +31,7 @@ function WeddingPlanner() {
       if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
       if (filters.minExperience) params.append('minExperience', filters.minExperience);
 
-      const response = await axios.get(`http://localhost:5000/api/wedding-planner?${params}`);
+      const response = await axios.get(`${API_URL}/wedding-planner?${params}`);
       setWeddingPlanners(response.data.data);
     } catch (error) {
       console.error('Error fetching wedding planners:', error);

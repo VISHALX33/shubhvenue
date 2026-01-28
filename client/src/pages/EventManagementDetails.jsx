@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EventManagementDetails = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const EventManagementDetails = () => {
   const fetchEventManagerDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/event-management/${id}`);
+      const response = await axios.get(`${API_URL}/event-management/${id}`);
       setEventManager(response.data.data);
     } catch (error) {
       console.error('Error fetching event manager details:', error);

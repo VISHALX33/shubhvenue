@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const AddJuiceCounter = () => {
   const navigate = useNavigate();
@@ -185,7 +186,7 @@ const AddJuiceCounter = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5000/api/juice-counters',
+        `${API_URL}/juice-counters`,
         formData,
         {
           headers: {

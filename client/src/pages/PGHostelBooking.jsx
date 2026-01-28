@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PGHostelBookingCard from '../components/PGHostelBookingCard';
+import API_URL from '../config/api';
 
 function PGHostelBooking() {
   const [pgHostels, setPGHostels] = useState([]);
@@ -25,7 +26,7 @@ function PGHostelBooking() {
 
   const fetchPGHostels = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/pg-hostel');
+      const response = await axios.get(`${API_URL}/pg-hostel`);
       setPGHostels(response.data);
       setFilteredPGHostels(response.data);
       setLoading(false);

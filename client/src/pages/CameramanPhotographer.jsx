@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PhotographerCard from '../components/PhotographerCard';
+import API_URL from '../config/api';
 
 function CameramanPhotographer() {
   const [photographers, setPhotographers] = useState([]);
@@ -29,7 +30,7 @@ function CameramanPhotographer() {
       if (filters.specialization) params.append('specialization', filters.specialization);
 
       const queryString = params.toString() ? `?${params.toString()}` : '';
-      const response = await axios.get(`http://localhost:5000/api/photographers${queryString}`);
+      const response = await axios.get(`${API_URL}/photographers${queryString}`);
       
       setPhotographers(response.data.data);
       setLoading(false);

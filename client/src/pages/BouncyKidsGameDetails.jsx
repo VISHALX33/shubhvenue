@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { 
   FaGamepad, FaMapMarkerAlt, FaStar, FaPhone, FaEnvelope, 
   FaGlobe, FaInstagram, FaFacebook, FaWhatsapp, FaBox,
@@ -23,7 +24,7 @@ function BouncyKidsGameDetails() {
 
   const fetchGameDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/bouncy-kids-game/${id}`);
+      const response = await axios.get(`${API_URL}/bouncy-kids-game/${id}`);
       setGame(response.data.data);
       setLoading(false);
     } catch (err) {
@@ -41,7 +42,7 @@ function BouncyKidsGameDetails() {
 
     setSubmittingReview(true);
     try {
-      await axios.post(`http://localhost:5000/api/bouncy-kids-game/${id}/reviews`, newReview);
+      await axios.post(`${API_URL}/bouncy-kids-game/${id}/reviews`, newReview);
       setNewReview({ userName: '', rating: 5, comment: '' });
       fetchGameDetails();
       alert('Review submitted successfully!');

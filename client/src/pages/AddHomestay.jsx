@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function AddHomestay() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ function AddHomestay() {
       };
 
       await axios.post(
-        'http://localhost:5000/api/homestays',
+        `${API_URL}/homestays`,
         submitData,
         {
           headers: { Authorization: `Bearer ${token}` }

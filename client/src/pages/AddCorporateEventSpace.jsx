@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function AddCorporateEventSpace() {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ function AddCorporateEventSpace() {
       };
 
       await axios.post(
-        'http://localhost:5000/api/corporate-event-spaces',
+        `${API_URL}/corporate-event-spaces`,
         submitData,
         {
           headers: { Authorization: `Bearer ${token}` }

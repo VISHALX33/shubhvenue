@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import JuiceCounterCard from '../components/JuiceCounterCard';
 import { FaGlassWhiskey, FaFilter } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function JuiceCounterBooking() {
   const [counters, setCounters] = useState([]);
@@ -20,7 +21,7 @@ function JuiceCounterBooking() {
 
   const fetchCounters = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/juice-counter');
+      const response = await axios.get(`${API_URL}/juice-counter`);
       setCounters(response.data.data);
       setFilteredCounters(response.data.data);
       setLoading(false);

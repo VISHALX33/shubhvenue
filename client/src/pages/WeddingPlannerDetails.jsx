@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { 
   FaMapMarkerAlt, FaPhone, FaEnvelope, FaGlobe, FaWhatsapp, FaInstagram,
   FaStar, FaUsers, FaCheckCircle, FaBriefcase, FaAward, FaHeart, FaShare,
@@ -22,7 +23,7 @@ const WeddingPlannerDetails = () => {
   const fetchPlannerDetails = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/wedding-planner/${id}`);
+      const response = await axios.get(`${API_URL}/wedding-planner/${id}`);
       setPlanner(response.data.data);
     } catch (error) {
       console.error('Error fetching wedding planner details:', error);

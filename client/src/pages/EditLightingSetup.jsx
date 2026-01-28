@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EditLightingSetup = () => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ const EditLightingSetup = () => {
   const fetchListing = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/lighting-setups/${id}`, {
+      const response = await axios.get(`${API_URL}/lighting-setups/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -155,7 +156,7 @@ const EditLightingSetup = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/lighting-setups/${id}`,
+        `${API_URL}/lighting-setups/${id}`,
         formData,
         {
           headers: {

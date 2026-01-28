@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const GeneratorDetails = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const GeneratorDetails = () => {
   const fetchGeneratorDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/generators/${id}`);
+      const response = await axios.get(`${API_URL}/generators/${id}`);
       setGenerator(response.data.data);
     } catch (error) {
       console.error('Error fetching generator details:', error);

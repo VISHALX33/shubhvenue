@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import OpenGroundCard from '../components/OpenGroundCard';
+import API_URL from '../config/api';
 
 function OpenGroundBooking() {
   const [openGrounds, setOpenGrounds] = useState([]);
@@ -32,7 +33,7 @@ function OpenGroundBooking() {
 
       const queryString = queryParams.toString();
       const response = await axios.get(
-        `http://localhost:5000/api/open-grounds${queryString ? `?${queryString}` : ''}`
+        `${API_URL}/open-grounds${queryString ? `?${queryString}` : ''}`
       );
       
       setOpenGrounds(response.data.data);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const AddFurnitureRental = () => {
   const navigate = useNavigate();
@@ -183,7 +184,7 @@ const AddFurnitureRental = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5000/api/furniture-rentals',
+        `${API_URL}/furniture-rentals`,
         formData,
         {
           headers: {

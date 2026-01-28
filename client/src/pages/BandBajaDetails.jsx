@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const BandBajaDetails = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const BandBajaDetails = () => {
   const fetchBandBajaDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/band-baja/${id}`);
+      const response = await axios.get(`${API_URL}/band-baja/${id}`);
       setBandBaja(response.data.data);
     } catch (error) {
       console.error('Error fetching band baja details:', error);

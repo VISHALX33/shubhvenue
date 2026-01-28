@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import CommercialPropertyBookingCard from '../components/CommercialPropertyBookingCard'
@@ -78,7 +79,7 @@ function CommercialPropertyBooking() {
         }
       }
 
-      const response = await axios.get('http://localhost:5000/api/commercial-property', { params })
+      const response = await axios.get(`${API_URL}/commercial-property`, { params })
       setProperties(response.data)
     } catch (error) {
       console.error('Error fetching properties:', error)

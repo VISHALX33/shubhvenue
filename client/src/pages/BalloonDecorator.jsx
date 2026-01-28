@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import BalloonDecoratorCard from '../components/BalloonDecoratorCard';
 import { FaBirthdayCake, FaFilter } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function BalloonDecorator() {
   const [decorators, setDecorators] = useState([]);
@@ -25,7 +26,7 @@ function BalloonDecorator() {
   const fetchDecorators = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/balloon-decorator');
+      const response = await axios.get(`${API_URL}/balloon-decorator`);
       setDecorators(response.data.data);
     } catch (error) {
       console.error('Error fetching balloon decorators:', error);

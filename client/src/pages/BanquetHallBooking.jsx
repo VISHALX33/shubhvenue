@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BanquetHallCard from '../components/BanquetHallCard';
+import API_URL from '../config/api';
 
 function BanquetHallBooking() {
   const [banquetHalls, setBanquetHalls] = useState([]);
@@ -22,7 +23,7 @@ function BanquetHallBooking() {
     try {
       setLoading(true);
       const queryParams = new URLSearchParams(filterParams).toString();
-      const response = await axios.get(`http://localhost:5000/api/banquet-halls?${queryParams}`);
+      const response = await axios.get(`${API_URL}/banquet-halls?${queryParams}`);
       setBanquetHalls(response.data.data);
     } catch (error) {
       console.error('Error fetching banquet halls:', error);

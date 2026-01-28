@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -159,12 +160,12 @@ function Home() {
     const fetchVenues = async () => {
       try {
         const [gardensResponse, hallsResponse, farmHousesResponse, hotelsResponse, resortsResponse, corporateSpacesResponse] = await Promise.all([
-          axios.get('http://localhost:5000/api/marriage-gardens'),
-          axios.get('http://localhost:5000/api/banquet-halls'),
-          axios.get('http://localhost:5000/api/farm-houses'),
-          axios.get('http://localhost:5000/api/hotels'),
-          axios.get('http://localhost:5000/api/resorts'),
-          axios.get('http://localhost:5000/api/corporate-event-spaces')
+          axios.get(`${API_URL}/marriage-gardens`),
+          axios.get(`${API_URL}/banquet-halls`),
+          axios.get(`${API_URL}/farm-houses`),
+          axios.get(`${API_URL}/hotels`),
+          axios.get(`${API_URL}/resorts`),
+          axios.get(`${API_URL}/corporate-event-spaces`)
         ])
         setMarriageGardens(gardensResponse.data.data.slice(0, 3))
         setBanquetHalls(hallsResponse.data.data.slice(0, 3))

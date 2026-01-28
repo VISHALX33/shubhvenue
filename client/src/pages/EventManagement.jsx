@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import EventManagerCard from '../components/EventManagerCard';
+import API_URL from '../config/api';
 
 function EventManagement() {
   const [eventManagers, setEventManagers] = useState([]);
@@ -29,7 +30,7 @@ function EventManagement() {
       if (filters.specialization) queryParams.append('specialization', filters.specialization);
 
       const queryString = queryParams.toString();
-      const url = `http://localhost:5000/api/event-management${queryString ? `?${queryString}` : ''}`;
+      const url = `${API_URL}/event-management${queryString ? `?${queryString}` : ''}`;
       
       const response = await axios.get(url);
       setEventManagers(response.data.data);

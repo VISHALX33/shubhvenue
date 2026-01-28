@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const OpenGroundDetails = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const OpenGroundDetails = () => {
 
   const fetchGroundDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/open-grounds/${id}`);
+      const response = await axios.get(`${API_URL}/open-grounds/${id}`);
       setGround(response.data.data);
       setLoading(false);
     } catch (error) {

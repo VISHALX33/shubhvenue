@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 const EditFurnitureRental = () => {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ const EditFurnitureRental = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/furniture-rentals/${id}`, {
+      const response = await axios.get(`${API_URL}/furniture-rentals/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -208,7 +209,7 @@ const EditFurnitureRental = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/furniture-rentals/${id}`,
+        `${API_URL}/furniture-rentals/${id}`,
         formData,
         {
           headers: {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import HotelCard from '../components/HotelCard';
 import { FaHotel } from 'react-icons/fa';
+import API_URL from '../config/api';
 
 function HotelRoomBooking() {
   const [hotels, setHotels] = useState([]);
@@ -25,7 +26,7 @@ function HotelRoomBooking() {
       const queryParams = new URLSearchParams(
         Object.fromEntries(Object.entries(filterParams).filter(([_, value]) => value !== ''))
       ).toString();
-      const response = await axios.get(`http://localhost:5000/api/hotels?${queryParams}`);
+      const response = await axios.get(`${API_URL}/hotels?${queryParams}`);
       setHotels(response.data.data || response.data);
     } catch (error) {
       console.error('Error fetching hotels:', error);

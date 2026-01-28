@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import API_URL from '../config/api';
 
 function DJDetails() {
   const { id } = useParams();
@@ -19,7 +20,7 @@ function DJDetails() {
   const fetchDJDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/djs/${id}`);
+      const response = await axios.get(`${API_URL}/djs/${id}`);
       setDJ(response.data.data);
     } catch (error) {
       console.error('Error fetching DJ details:', error);

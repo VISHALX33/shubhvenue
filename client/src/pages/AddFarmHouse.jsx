@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 function AddFarmHouse() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ function AddFarmHouse() {
       };
 
       await axios.post(
-        'http://localhost:5000/api/farm-houses',
+        `${API_URL}/farm-houses`,
         submitData,
         {
           headers: { Authorization: `Bearer ${token}` }

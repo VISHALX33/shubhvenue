@@ -1,3 +1,4 @@
+import API_URL from '../config/api';
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import MarriageGardenCard from '../components/MarriageGardenCard'
@@ -37,11 +38,11 @@ function AllVenueHallBookings() {
 
       // Fetch from all venue APIs in parallel
       const [marriageGardens, banquetHalls, farmHouses, hotels, resorts] = await Promise.all([
-        axios.get(`http://localhost:5000/api/marriage-gardens${queryString ? '?' + queryString : ''}`),
-        axios.get(`http://localhost:5000/api/banquet-halls${queryString ? '?' + queryString : ''}`),
-        axios.get(`http://localhost:5000/api/farm-houses${queryString ? '?' + queryString : ''}`),
-        axios.get(`http://localhost:5000/api/hotels${queryString ? '?' + queryString : ''}`),
-        axios.get(`http://localhost:5000/api/resorts${queryString ? '?' + queryString : ''}`)
+        axios.get(`${API_URL}/marriage-gardens${queryString ? '?' + queryString : ''}`),
+        axios.get(`${API_URL}/banquet-halls${queryString ? '?' + queryString : ''}`),
+        axios.get(`${API_URL}/farm-houses${queryString ? '?' + queryString : ''}`),
+        axios.get(`${API_URL}/hotels${queryString ? '?' + queryString : ''}`),
+        axios.get(`${API_URL}/resorts${queryString ? '?' + queryString : ''}`)
       ])
 
       // Combine all venues with type identifier

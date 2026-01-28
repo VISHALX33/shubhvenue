@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 const AuthContext = createContext();
 
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('/api/auth/me');
+      const response = await axios.get(`${API_URL}/auth/me`);
       setUser(response.data.data);
     } catch (error) {
       console.error('Error fetching user:', error);
@@ -47,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     }
     
     // Otherwise, perform full login
-    const response = await axios.post('/api/auth/login', { email: emailOrUser, password });
+    const response = await axios.post(`${API_URL}/auth/login`, { email: emailOrUser, password });
     const { token, ...userData } = response.data.data;
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -56,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const registerVendor = async (data) => {
-    const response = await axios.post('/api/auth/register/vendor', data);
+    const response = await axios.post(`${API_URL}/auth/register/vendor`, data);
     const { token, ...userData } = response.data.data;
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -65,7 +66,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const firebaseAuth = async (firebaseData) => {
-    const response = await axios.post('/api/auth/firebase', firebaseData);
+    const response = await axios.post(`${API_URL}/auth/firebase`, firebaseData);
     const { token, ...userData } = response.data.data;
     localStorage.setItem('token', token);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
